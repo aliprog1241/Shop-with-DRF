@@ -20,16 +20,16 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def validate_title(self, value):
         if len(value) < 3:
-            raise serializers.ValidationError("عنوان باید حداقل ۳ کاراکتر باشد.")
+            raise serializers.ValidationError("The title must be at least 3 characters.")
         return value
 
     def validate(self, attrs):
         price = attrs.get("price", getattr(self.instance, "price", None))
         stock = attrs.get("stock", getattr(self.instance, "stock", None))
         if price is not None and price <= 0:
-            raise serializers.ValidationError({"price": "قیمت باید بزرگ‌تر از صفر باشد."})
+            raise serializers.ValidationError({"price": "The price must be greater than zero."})
         if stock is not None and stock < 0:
-            raise serializers.ValidationError({"stock": "موجودی نمی‌تواند منفی باشد."})
+            raise serializers.ValidationError({"stock": "Inventory cannot be negative."})
         return attrs
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -42,7 +42,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def validate_rating(self, value):
         if not 1 <= value <= 5:
-            raise serializers.ValidationError("امتیاز باید بین ۱ تا ۵ باشد.")
+            raise serializers.ValidationError("The score should be between 1 and 5.")
         return value
 
     def create(self, validated_data):
