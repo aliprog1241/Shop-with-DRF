@@ -66,3 +66,14 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
     lookup_field = "slug"
     permission_classes = [permissions.IsAdminUser]
 
+class ReviewListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    throttle_scope = "reviews"
+
+    def get_queryset(self):
+        product_id = self.kwargs["product_id"]
+        return Review.objects.filter(product_id=product_id)
+
+    def perform_create(self, serializer):
+        serializer.save()
