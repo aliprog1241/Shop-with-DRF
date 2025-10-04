@@ -11,7 +11,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def validate_username(self, value):
         if " " in value:
-            raise serializers.ValidationError("نام کاربری نباید فاصله داشته باشد.")
+            raise serializers.ValidationError("Usernames should not contain spaces.")
         return value
 
     def create(self, validated_data):
