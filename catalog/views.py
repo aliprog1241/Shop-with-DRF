@@ -37,3 +37,15 @@ class ProductListAPIView(generics.ListAPIView):
     search_fields = ["title", "slug", "category__title"]
     ordering_fields = ["price", "created_at"]
 
+class ProductListLimitOffsetAPIView(generics.ListAPIView):
+    queryset = Product.objects.filter(is_active=True)
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.AllowAny]
+    pagination_class = ProductLimitOffsetPagination
+
+class ProductListCursorAPIView(generics.ListAPIView):
+    queryset = Product.objects.filter(is_active=True)
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.AllowAny]
+    pagination_class = ProductCursorPagination
+
