@@ -1,8 +1,12 @@
 # catalog/views.py
-from rest_framework import generics, permissions, pagination, filters
+from rest_framework import  pagination, filters
 from rest_framework.throttling import ScopedRateThrottle
-from .models import Product, Review, Category
-from .serializers import ProductSerializer, ReviewSerializer, CategorySerializer
+from .models import Product, Category
+from .serializers import ProductSerializer, CategorySerializer
+from rest_framework import generics, permissions
+from .permissions import IsReviewOwnerOrReadOnly
+from .models import Review
+from .serializers import ReviewSerializer
 
 # Pagination اختصاصی (برای نمایش در یکی از ویوها)
 class SmallPageNumberPagination(pagination.PageNumberPagination):
@@ -77,3 +81,8 @@ class ReviewListCreateAPIView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+
+class ReviewRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticated, IsReviewOwnerOrReadOnly]
