@@ -49,3 +49,20 @@ class ProductListCursorAPIView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
     pagination_class = ProductCursorPagination
 
+class ProductCreateAPIView(generics.CreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAdminUser]  # فقط ادمین
+    throttle_scope = "products"
+
+class ProductRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Product.objects.filter(is_active=True)
+    serializer_class = ProductSerializer
+    lookup_field = "slug"
+
+class ProductUpdateAPIView(generics.UpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = "slug"
+    permission_classes = [permissions.IsAdminUser]
+
