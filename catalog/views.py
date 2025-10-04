@@ -26,3 +26,14 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAdminUser]  # فقط ادمین بسازد
     throttle_scope = "products"
 
+class ProductListAPIView(generics.ListAPIView):
+    queryset = Product.objects.filter(is_active=True)
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "products"
+    pagination_class = SmallPageNumberPagination  # استفاده از Pagination سفارشی
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ["title", "slug", "category__title"]
+    ordering_fields = ["price", "created_at"]
+
