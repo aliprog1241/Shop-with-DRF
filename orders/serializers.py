@@ -28,7 +28,7 @@ class OrderCreateSerializer(serializers.Serializer):
         # مثال ولیدیشن سطح بالا
         items = attrs["items"]
         if len(items) == 0:
-            raise serializers.ValidationError("حداقل یک آیتم لازم است.")
+            raise serializers.ValidationError("At least one item is required.")
         return attrs
 
     def create(self, validated_data):
